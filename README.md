@@ -4,21 +4,18 @@
 
 ### Real-time heartbeat classification powered by the MIT-BIH Arrhythmia Database
 
-[![Python](https://img.shields.io/badge/Python-3.8%2B-blue?style=for-the-badge&logo=python&logoColor=white)](https://python.org)
-[![MIT-BIH](https://img.shields.io/badge/Dataset-MIT--BIH-red?style=for-the-badge)](https://physionet.org/content/mitdb/1.0.0/)
-[![Accuracy](https://img.shields.io/badge/Accuracy-90%25%2B-brightgreen?style=for-the-badge)]()
-[![License](https://img.shields.io/badge/License-MIT-yellow?style=for-the-badge)](LICENSE)
+![Python](https://img.shields.io/badge/Python-3.8+-blue) ![License](https://img.shields.io/badge/License-MIT-green) ![Accuracy](https://img.shields.io/badge/Accuracy-90%25-brightgreen) ![Dataset](https://img.shields.io/badge/Dataset-MIT--BIH-orange)
 
 **Built by [Rufus Pitta](https://github.com/rufuspitta-ux)**
 
-*A desktop application that loads real clinical ECG data, classifies heartbeats in milliseconds using a trained ML model, renders live waveforms, speaks voice alerts for dangerous arrhythmias, and exports detailed PDF clinical reports — all in a sleek dark-themed GUI.*
+*A desktop application that loads real clinical ECG data, classifies heartbeats in milliseconds using a trained ML model, renders live waveforms, speaks voice alerts for dangerous arrhythmias, and generates professional PDF reports.*
 
 </div>
 
 ---
 
 ## 🎬 Demo
-[demo_ecg.zip](https://github.com/user-attachments/files/27163326/demo_ecg.zip)
+![ECG Demo](demo.gif)
 
 ---
 
@@ -46,18 +43,31 @@
 
 ---
 
+## 📊 Results
+
+| Metric | Value |
+|--------|-------|
+| Overall Accuracy | 90%+ |
+| Dataset | MIT-BIH (92,781 beats) |
+| Training Split | 80/20 |
+| Inference Time | <50ms per beat |
+
+---
+
 ## 🗂 Project Structure
 
 ```
-ecg-arrhythmia/
+ecg-arrhythmia-classifier/
 │
-├── ecg_arrhythmia.py        # Main application — GUI + ML pipeline
-├── requirements.txt          # Python dependencies
+├── ecg_arrhythmia_classifier.py    # Main application — GUI + ML pipeline
+├── requirements.txt                 # Python dependencies
 ├── README.md
+├── .github/
+│   └── topics.txt                   # Repository topics
 │
 └── model/
-    ├── ecg_model.pkl         # Trained scikit-learn classifier
-    └── ecg_data.pkl          # Extracted beat features + labels
+    ├── ecg_model.pkl                # Trained scikit-learn classifier
+    └── ecg_data.pkl                 # Extracted beat features + labels
 ```
 
 ---
@@ -67,8 +77,8 @@ ecg-arrhythmia/
 **1. Clone the repo**
 
 ```bash
-git clone https://github.com/rufuspitta-ux/ecg-arrhythmia.git
-cd ecg-arrhythmia
+git clone https://github.com/rufuspitta-ux/ecg-arrhythmia-classifier.git
+cd ecg-arrhythmia-classifier
 ```
 
 **2. Install dependencies**
@@ -83,25 +93,24 @@ Get it free from PhysioNet: https://physionet.org/content/mitdb/1.0.0/
 
 **4. Configure your paths**
 
-Open `ecg_arrhythmia.py` and update the two constants at the top:
-
-```python
-DATA_PATH  = r'C:\path\to\mit-bih-arrhythmia-database-1.0.0'
-MODEL_PATH = r'C:\path\to\model'
-```
-
-Or use environment variables:
+Set environment variables for data and model paths:
 
 ```bash
 # Windows
 set MIT_BIH_PATH=C:\path\to\mit-bih-arrhythmia-database-1.0.0
 set ECG_MODEL_PATH=C:\path\to\model
+
+# macOS/Linux
+export MIT_BIH_PATH=/path/to/mit-bih-arrhythmia-database-1.0.0
+export ECG_MODEL_PATH=/path/to/model
 ```
+
+Alternatively, place data in `./data/` and model in `./model/` directories relative to the script.
 
 **5. Run**
 
 ```bash
-python ecg_arrhythmia.py
+python ecg_arrhythmia_classifier.py
 ```
 
 ---
@@ -131,7 +140,7 @@ Each heartbeat is a 180-sample window centred on the R-peak. Fourteen time-domai
 
 ## 📄 PDF Report
 
-Click **PDF REPORT** after any classification to export a clinical-style report containing the record ID, beat classification, risk level, signal statistics, inference time, AI clinical assessment, and recommended next steps.
+Click **PDF REPORT** after any classification to export a clinical-style report containing the record ID, beat classification, risk level, signal statistics, inference time, and AI clinical assessment with personalized recommendations.
 
 Reports are saved as `ECG_Report_<record>_<YYYYMMDD_HHMMSS>.pdf` in the working directory.
 
@@ -146,6 +155,8 @@ wfdb
 pyttsx3
 reportlab
 scikit-learn
+scipy
+seaborn
 ```
 
 > `tkinter` is bundled with standard Python — no separate install needed.
@@ -162,7 +173,7 @@ Available at: https://physionet.org/content/mitdb/1.0.0/
 
 ## ⚠️ Disclaimer
 
-This project is for **educational and research purposes only**. It is not a certified medical device and must not be used for clinical diagnosis or patient care. Always consult a qualified cardiologist for cardiac concerns.
+This project is for **educational and research purposes only**. It is not a certified medical device and must not be used for clinical diagnosis or patient care. Always consult a qualified cardiologist for medical decisions. The accuracy of 90%+ reflects performance on the MIT-BIH database under controlled conditions and may vary with different ECG signals.
 
 ---
 
