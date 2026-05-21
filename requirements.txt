@@ -1,0 +1,8 @@
+numpy
+matplotlib
+wfdb
+pyttsx3
+reportlab
+scikit-learn
+scipy
+seaborn
