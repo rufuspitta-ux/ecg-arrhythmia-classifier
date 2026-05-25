@@ -296,8 +296,8 @@ This project is licensed under the MIT License - see [LICENSE](LICENSE) file for
 
 - 🐛 **Report Bugs:** Open an [Issue](https://github.com/rufuspitta-ux/ecg-arrhythmia-classifier/issues)
 - 💬 **Discussions:** Join [Discussions](https://github.com/rufuspitta-ux/ecg-arrhythmia-classifier/discussions)
-- 📧 **Email:** [Your Email]
-- 💼 **LinkedIn:** [Your LinkedIn]
+- 📧 **Email:** [rufuspitta@gmail.com]
+- 💼 **LinkedIn:** [rufuspitta]
 
 ---
 
