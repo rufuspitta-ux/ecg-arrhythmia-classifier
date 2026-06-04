@@ -28,6 +28,7 @@ venv/
 ENV/
 env/
 .venv
+virtualenv/
 
 # IDE
 .vscode/
@@ -36,6 +37,8 @@ env/
 *.swo
 *~
 .DS_Store
+*.sublime-project
+*.sublime-workspace
 
 # Jupyter Notebook
 .ipynb_checkpoints
@@ -49,14 +52,20 @@ model/
 data/
 *.csv
 *.xlsx
+*.xls
 
 # Environment variables
 .env
 .env.local
+.env.*.local
 
-# Logs
+# Logs & Reports
 *.log
 logs/
+htmlcov/
+.coverage
+.coverage.*
+.pytest_cache/
 
 # OS
 .DS_Store
@@ -66,3 +75,16 @@ Thumbs.db
 *.pdf
 results/
 outputs/
+reports/
+*.step
+*.stp
+
+# Testing
+.tox/
+.hypothesis/
+*.cover
+
+# Distribution
+build/
+dist/
+*.egg-info/
