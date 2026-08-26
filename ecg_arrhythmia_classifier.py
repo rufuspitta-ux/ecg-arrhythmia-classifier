@@ -45,6 +45,7 @@ LABEL_INFO = {
     'V': ('Ventricular Ectopic', RED,    'DANGEROUS', 'Critical'),
     'A': ('Atrial Premature',    ORANGE, 'WARNING',   'Moderate'),
     'L': ('Left Bundle Branch',  PURPLE, 'ABNORMAL',  'High'),
+    'R': ('Right Bundle Branch', PURPLE, 'ABNORMAL',  'High'),
 }
 
 def _get_env_path(env_var: str, fallback_relative: str) -> str:
@@ -123,6 +124,12 @@ def extract_features(beats: np.ndarray) -> np.ndarray:
     Returns:
         np.ndarray: Extracted features (n_beats × 14 features)
     """
+    beats = np.asarray(beats)
+    if beats.ndim != 2 or beats.shape[1] != 180:
+        raise ValueError(f'Expected beats with shape (n, 180), got {beats.shape}')
+    if not np.isfinite(beats).all():
+        raise ValueError('ECG beats must contain only finite numeric values')
+
     features = []
     for beat in beats:
         mean = np.mean(beat)
@@ -166,7 +173,7 @@ def load_beats_from_record(record_name: str) -> tuple:
     signal     = record.p_signal[:, 0]
     window     = 90
     beats, labels = [], []
-    keep = {'N', 'V', 'A', 'L'}
+    keep = {'N', 'V', 'A', 'L', 'R'}
     for i, pos in enumerate(annotation.sample):
         if pos - window < 0 or pos + window > len(signal):
             continue
@@ -272,7 +279,7 @@ def generate_confusion_matrix(model, X_test: np.ndarray, y_test: np.ndarray) -> 
     
     # Calculate accuracy metrics
     overall_acc = accuracy_score(y_test, y_pred)
-    classes = ['N', 'V', 'A', 'L']
+    classes = ['N', 'V', 'A', 'L', 'R']
     
     print("\n" + "="*50)
     print("CONFUSION MATRIX ANALYSIS")
