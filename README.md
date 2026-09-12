@@ -1,12 +1,14 @@
 # ECG Arrhythmia Classifier
 
-A research-oriented Python/Tkinter application for exploring **heartbeat classification using the MIT-BIH Arrhythmia Database**.
+A research-oriented Python/Tkinter application for exploring **heartbeat classification with the MIT-BIH Arrhythmia Database**.
 
-The project combines ECG record loading with WFDB, beat-level feature extraction, a scikit-learn-compatible classifier, waveform visualization, optional speech alerts, confusion-matrix visualization, and PDF reporting.
+The project combines ECG record loading with WFDB, beat-level feature extraction, a scikit-learn-compatible classifier, waveform visualization, optional speech output, confusion-matrix generation, and PDF summaries.
 
-> **Research / portfolio prototype:** This software is not a medical device and must not be used for autonomous diagnosis or clinical decision-making. Clinical use would require independent validation, quality management, regulatory review, and qualified clinical oversight.
+> **Research / portfolio prototype:** this software is not a medical device and must not be used for autonomous diagnosis or clinical decision-making. Clinical use would require independent validation, quality management, regulatory review, and qualified clinical oversight.
 
-## What it demonstrates
+## Why this project matters
+
+This project sits at the intersection of **biomedical signal processing + machine learning + desktop healthcare software**. It demonstrates a complete prototype path from an ECG waveform to an interpretable software classification workflow.
 
 ```text
 MIT-BIH ECG record
@@ -19,28 +21,41 @@ ML classifier
        ↓
 Heartbeat class
        ↓
-Waveform + optional alert + PDF summary
+Waveform + optional speech + PDF summary
 ```
 
-The current GUI implementation is in `ecg_arrhythmia_classifier.py`. A legacy alternate script, `ecg arthymines.py`, is also present.
+## What is implemented
+
+- WFDB-based ECG record loading
+- 180-sample beat windows
+- 14 time-domain features
+- Scikit-learn classifier integration
+- Tkinter desktop GUI
+- ECG waveform visualization
+- Optional speech output
+- Confusion-matrix plotting support
+- PDF summary generation
+- Core feature-validation tests with pytest
+
+The main application is `ecg_arrhythmia_classifier.py`.
 
 ## Supported labels
 
-| Label | Meaning | Demo risk display |
-|---|---|---|
-| `N` | Normal beat | Low |
-| `V` | Ventricular ectopic beat | Critical |
-| `A` | Atrial premature beat | Moderate |
-| `L` | Left bundle branch beat | High |
-| `R` | Right bundle branch beat | High |
+| Label | Class description |
+|---|---|
+| `N` | Normal beat |
+| `V` | Ventricular ectopic beat |
+| `A` | Atrial premature beat |
+| `L` | Left bundle branch beat |
+| `R` | Right bundle branch beat |
 
-The risk wording is a **software demonstration label**, not a medical risk assessment.
+These labels are **dataset/model classes**, not clinical risk assessments.
 
 ## Dataset
 
-The project uses the **MIT-BIH Arrhythmia Database** available through PhysioNet. The database itself is not redistributed in this repository.
+The project uses the **MIT-BIH Arrhythmia Database** available through PhysioNet. The dataset itself is not redistributed in this repository.
 
-Download the dataset from PhysioNet and place the required record files (`.dat`, `.hea`, `.atr`) in a local directory.
+Download the required records from PhysioNet and keep them in a local directory containing the appropriate `.dat`, `.hea`, and `.atr` files.
 
 ## Requirements
 
@@ -58,14 +73,14 @@ source .venv/bin/activate
 pip install -r requirements.txt
 ```
 
-The application also requires local model/data artifacts:
+The application also expects local model/data artifacts:
 
 ```text
 model/ecg_model.pkl
 model/ecg_data.pkl
 ```
 
-`ecg_data.pkl` is expected to contain `(X, y)`, while the classifier must provide a compatible `predict()` method.
+`ecg_data.pkl` is expected to contain `(X, y)`, and the classifier must expose a compatible `predict()` method.
 
 ### Security note
 
@@ -77,61 +92,73 @@ Only load pickle files from trusted sources. Python pickle deserialization can e
 python ecg_arrhythmia_classifier.py
 ```
 
-Optional environment variables can be used to point the application at custom data/model locations:
+Optional Windows PowerShell configuration:
 
-```bash
-# Windows PowerShell
-$env:MIT_BIH_PATH = "C:\\path\\to\\mit-bih"
-$env:ECG_MODEL_PATH = "C:\\path\\to\\model"
+```powershell
+$env:MIT_BIH_PATH = "C:\path\to\mit-bih"
+$env:ECG_MODEL_PATH = "C:\path\to\model"
 python ecg_arrhythmia_classifier.py
 ```
 
-The GUI supports record/beat exploration and actions such as **CLASSIFY**, **RANDOM**, **VOICE**, and **PDF REPORT**.
+The GUI includes actions such as **CLASSIFY**, **RANDOM**, **VOICE**, and **PDF REPORT** for local experimentation.
 
-## Evaluation & reproducibility
+## Evaluation and reproducibility
 
-The current repository does **not** include the original training pipeline or model artifacts. Therefore, previously reported accuracy figures should not be treated as independently reproducible from a clean clone.
+The current repository does **not** include the original training pipeline or model artifacts. Therefore, historical accuracy figures should not be presented as independently reproducible results from a clean clone.
 
 A rigorous evaluation should include:
 
 - Patient-disjoint train/validation/test splits
 - Fixed random seeds
-- Per-class precision, recall, sensitivity, and specificity
+- Per-class precision and recall
+- Sensitivity and specificity where appropriate
 - Confusion matrix
-- Confidence intervals where appropriate
-- Explicit preprocessing and excluded-beat rules
+- Explicit preprocessing and beat-selection rules
 - Exact feature definitions and dataset mapping
-- Model version/checksum metadata
+- Versioned model metadata/checksums
 
-This distinction is intentional: a medical ML project should make it clear which results are reproducible and which are historical/project-level results.
+This boundary is intentional: medical ML projects should distinguish reproducible evidence from historical development results.
 
 ## Testing
 
-If the repository test suite is installed:
+Run the automated tests with:
 
 ```bash
 pytest -q
 ```
 
-The feature extraction logic validates that a beat is finite numeric data with the expected 180-sample length.
+The current tests cover core feature extraction behavior, including expected input shape, finite numeric values, and documented class metadata.
 
-## Known limitations
+## Repository structure
+
+```text
+ecg-arrhythmia-classifier/
+├── ecg_arrhythmia_classifier.py  # Main GUI/application
+├── ecg arthymines.py             # Legacy alternate script
+├── test_ecg_core.py              # Core feature tests
+├── requirements.txt              # Dependencies
+├── CHANGELOG.md                  # Project history
+├── SECURITY.md                   # Security/safety notes
+└── LICENSE                       # MIT license
+```
+
+## Current limitations
 
 - Training/model artifacts are not currently committed
-- The training pipeline is not yet packaged as a reproducible workflow
+- The training pipeline is not packaged as a reproducible end-to-end workflow
 - Dependency versions are not completely locked
 - Pickle is used for local model/data loading
 - The GUI is intended for local exploration rather than production deployment
 - PDF output is a software-generated summary, not a clinical report
-- Classification labels and displayed risk wording are not validated clinical decisions
+- Model classes are not validated clinical decisions
 
-## Recommended next improvements
+## Next engineering steps
 
-1. Publish the training and evaluation pipeline.
+1. Publish the training/evaluation pipeline.
 2. Add patient-disjoint benchmark splits.
 3. Add a reproducible metrics report and saved confusion matrix.
 4. Version model artifacts and feature definitions.
-5. Expand automated tests for preprocessing and feature extraction.
+5. Expand automated tests around preprocessing and feature extraction.
 6. Separate training/development dependencies from runtime dependencies.
 
 ## License
